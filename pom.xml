@@ -10,8 +10,6 @@
 	<name>Contoh Penggunaan Automated Test</name>
 
 	<dependencies>
-	
-	
 	   <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

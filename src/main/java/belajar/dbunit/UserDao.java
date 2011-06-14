@@ -1,16 +1,15 @@
 package belajar.dbunit;
 
+import java.sql.Connection;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 public class UserDao {
-	private DataSource dataSource;
+	private Connection connection;
 
-	public UserDao(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public UserDao(Connection connection) {
+		this.connection = connection;
 	}
-	
+
 	public void insert(User u){
 		
 	}
