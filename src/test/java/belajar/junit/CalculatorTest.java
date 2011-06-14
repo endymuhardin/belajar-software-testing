@@ -15,6 +15,23 @@ public class CalculatorTest {
 		Calculator c = new Calculator();
 		assertEquals(seharusnya, c.tambah(x, y));
 	}
+	
+	@Test
+	public void testTambahNullInput() {
+		Integer x = null;
+		Integer y = 3;
+		Integer seharusnya = 7;
+		
+		try {
+			Calculator c = new Calculator();
+			c.tambah(x, y);
+			fail("Harusnya terjadi exception");
+		} catch (IllegalArgumentException err){
+			// biarkan saja, memang seharusnya exception
+		} catch (Exception err){
+			fail("Jenis exception salah, harusnya IAE, tapi "+err.getClass().getName());
+		}
+	}
 
 	@Test
 	public void testKurang() {
