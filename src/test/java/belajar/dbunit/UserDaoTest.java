@@ -1,11 +1,20 @@
 package belajar.dbunit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.List;
 
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.util.fileloader.DataFileLoader;
+import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,8 +37,12 @@ public class UserDaoTest {
 	@Before
 	public void resetDatabase() throws Exception {
 		System.out.println("Reset isi tabel database");
-		connection.createStatement()
-		.executeUpdate("delete from m_user");
+		
+		DataFileLoader loader = new FlatXmlDataFileLoader();
+		IDataSet ds = loader.load("/users.xml");
+		
+		DatabaseOperation.CLEAN_INSERT
+		.execute(new DatabaseConnection(connection), ds);
 	}
 	
 	@AfterClass
@@ -49,10 +62,10 @@ public class UserDaoTest {
 		
 		ResultSet rs = connection.createStatement().executeQuery("select count(*) from m_user");
 		assertTrue(rs.next());
-		assertEquals(1, rs.getInt(1));
+		assertEquals(3, rs.getInt(1));
 		rs.close();
 		
-		String sql = "select * from m_user";
+		String sql = "select * from m_user where name = 'Endy Muhardin'";
 		rs = connection.createStatement().executeQuery(sql);
 		
 		assertTrue("harusnya tabel m_user ada isinya", rs.next());
@@ -63,18 +76,18 @@ public class UserDaoTest {
 		assertEquals("Endy Muhardin", name);
 		
 		rs.close();
-		
-		
 	}
 
 	@Test
-	public void testFindById() {
+	public void testFindById() throws Exception {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testFindUserByName() {
-		fail("Not yet implemented");
+	public void testFindUserByName() throws Exception {
+		UserDao userDao = new UserDao(connection);
+		List<User> hasil = userDao.findUserByName("a");
+		assertTrue("harusnya ada 2 user di tabel", hasil.size() == 2);
 	}
 
 }
