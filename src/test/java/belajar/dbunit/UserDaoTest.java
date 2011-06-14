@@ -34,7 +34,7 @@ public class UserDaoTest {
 		String sql = "select * from m_user";
 		ResultSet rs = connection.createStatement().executeQuery(sql);
 		
-		assertTrue("harusnya tabel m_user isinya", rs.next());
+		assertTrue("harusnya tabel m_user ada isinya", rs.next());
 		
 		// periksa isinya
 		String name = rs.getString("name");
