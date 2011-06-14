@@ -10,6 +10,13 @@
 	<name>Contoh Penggunaan Automated Test</name>
 
 	<dependencies>
+	   <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.9</version>
+            <scope>runtime</scope>
+        </dependency>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
