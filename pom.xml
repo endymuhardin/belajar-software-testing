@@ -12,6 +12,12 @@
 	<properties>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<ch.qos.logback.version>0.9.27</ch.qos.logback.version>
+		
+		<!-- konfigurasi database development -->
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <jdbc.url>jdbc:mysql://localhost</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>admin</jdbc.password>
 	</properties>
 
 	<dependencies>
@@ -88,6 +94,48 @@
 							<goal>integration-test</goal>
 							<goal>verify</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sql-maven-plugin</artifactId>
+				<version>1.4</version>
+
+				<dependencies>
+					<!-- specify the dependent jdbc driver here -->
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.9</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+
+				<!-- common configuration shared by all executions -->
+				<configuration>
+					<driver>${jdbc.driver}</driver>
+					<url>${jdbc.url}</url>
+					<username>${jdbc.username}</username>
+					<password>${jdbc.password}</password>
+					<skip>${maven.test.skip}</skip>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>prepare-database</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<autocommit>true</autocommit>
+							<onError>continue</onError>
+							<srcFiles>
+								<srcFile>src/main/sql/skema-database.sql</srcFile>
+							</srcFiles>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
