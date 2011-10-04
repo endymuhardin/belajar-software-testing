@@ -20,7 +20,6 @@ public class CalculatorTest {
 	public void testTambahNullInput() {
 		Integer x = null;
 		Integer y = 3;
-		Integer seharusnya = 7;
 		
 		try {
 			Calculator c = new Calculator();
