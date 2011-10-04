@@ -79,11 +79,6 @@ public class UserDaoTestIT {
 	}
 
 	@Test
-	public void testFindById() throws Exception {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testFindUserByName() throws Exception {
 		UserDao userDao = new UserDao(connection);
 		List<User> hasil = userDao.findUserByName("a");
