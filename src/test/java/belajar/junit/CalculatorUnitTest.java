@@ -32,14 +32,4 @@ public class CalculatorUnitTest {
 		}
 	}
 
-	@Test
-	public void testKurang() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testKali() {
-		fail("Not yet implemented");
-	}
-
 }
