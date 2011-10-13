@@ -5,19 +5,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>training-java</groupId>
 	<artifactId>belajar-testing</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Contoh Penggunaan Automated Test</name>
 
 	<properties>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<ch.qos.logback.version>0.9.27</ch.qos.logback.version>
-		
+
 		<!-- konfigurasi database development -->
-        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
-        <jdbc.url>jdbc:mysql://localhost</jdbc.url>
-        <jdbc.username>root</jdbc.username>
-        <jdbc.password>admin</jdbc.password>
+		<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+		<jdbc.url>jdbc:mysql://localhost</jdbc.url>
+		<jdbc.username>root</jdbc.username>
+		<jdbc.password>admin</jdbc.password>
 	</properties>
 
 	<dependencies>
@@ -82,6 +82,84 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>keytool-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<id>clean</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+					<execution>
+						<phase>generate-resources</phase>
+						<id>genkey</id>
+						<goals>
+							<goal>genkey</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+					<dname>cn=artivisi.com</dname>
+					<keypass>jetty6</keypass>
+					<storepass>jetty6</storepass>
+					<alias>jetty6</alias>
+					<keyalg>RSA</keyalg>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.26</version>
+				<configuration>
+					<contextPath>/management</contextPath>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>9090</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+						<connector implementation="org.mortbay.jetty.security.SslSocketConnector">
+							<port>9443</port>
+							<maxIdleTime>60000</maxIdleTime>
+							<keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+							<password>jetty6</password>
+							<keyPassword>jetty6</keyPassword>
+						</connector>
+					</connectors>
+					<stopKey>coba</stopKey>
+					<stopPort>9999</stopPort>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<daemon>true</daemon>
+							<useTestClasspath>true</useTestClasspath>
+							<testClassesDirectory>${project.build.testOutputDirectory}</testClassesDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
