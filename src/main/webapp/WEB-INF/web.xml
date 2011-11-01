@@ -8,4 +8,15 @@
 	<description>
      Belajar Software Testing
   </description>
+  
+  <servlet>
+  	<servlet-name>halo</servlet-name>
+  	<servlet-class>belajar.servlet.HaloServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>halo</servlet-name>
+  	<url-pattern>/halo</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
